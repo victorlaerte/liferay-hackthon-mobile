@@ -7,11 +7,15 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import com.liferay.mobile.screens.auth.login.LoginListener;
 import com.liferay.mobile.screens.auth.login.LoginScreenlet;
 import com.liferay.mobile.screens.context.User;
 import com.liferay.mobile.screens.util.AndroidUtil;
 
+/**
+ * @author Luísa Lima
+ */
 public class LoginActivity extends AppCompatActivity implements LoginListener {
 	CoordinatorLayout coordinatorLayout;
 
@@ -24,6 +28,10 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 		coordinatorLayout = findViewById(R.id.coordinator);
 		LoginScreenlet loginScreenlet = findViewById(R.id.login);
 		loginScreenlet.setListener(this);
+
+		getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.login_status_bar_color));
+		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
 	}
 
 	@Override

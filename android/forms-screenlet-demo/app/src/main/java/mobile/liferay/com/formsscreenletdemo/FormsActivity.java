@@ -8,6 +8,9 @@ import com.liferay.apio.consumer.ApioConsumerKt;
 import com.liferay.mobile.screens.thingscreenlet.screens.ThingScreenlet;
 import com.liferay.mobile.screens.thingscreenlet.screens.views.Detail;
 
+/**
+ * @author Luísa Lima
+ */
 public class FormsActivity extends AppCompatActivity {
 
 	private ThingScreenlet forms;

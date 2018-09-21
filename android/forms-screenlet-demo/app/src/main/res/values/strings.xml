@@ -2,5 +2,11 @@
     <string name="app_name">FormsScreenletDemo</string>
     <string name="form_button">Form</string>
     <string name="home">Home</string>
+    <string name="login">Login</string>
     <string name="login_failed">Login Failed</string>
+    <string name="login_tgf">Login to TGF</string>
+    <string name="password">Password</string>
+    <string name="uppercase_login">LOGIN</string>
+    <string name="your_login">Your Login</string>
+    <string name="your_password">Your Password</string>
 </resources>

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<dimen name="margin_login">16dp</dimen>
+	<dimen name="login_button_height">40dp</dimen>
+	<dimen name="login_margin_top">24dp</dimen>
+	<dimen name="login_text_size">16sp</dimen>
+	<dimen name="margin_login">20dp</dimen>
+	<dimen name="padding_horizontal_login">16dp</dimen>
+	<dimen name="padding_vertical_login">16dp</dimen>
+	<dimen name="toolbar_elevation">4dp</dimen>
 </resources>

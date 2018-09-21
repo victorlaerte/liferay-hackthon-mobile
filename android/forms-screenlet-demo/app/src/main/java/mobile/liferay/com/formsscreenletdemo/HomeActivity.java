@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * @author Luísa Lima
+ */
 public class HomeActivity extends AppCompatActivity
     implements View.OnClickListener {
 

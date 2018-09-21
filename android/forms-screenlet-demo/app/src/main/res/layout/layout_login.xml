@@ -1,0 +1,84 @@
+<mobile.liferay.com.formsscreenletdemo.LoginDemoView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:background="@color/white"
+		>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/login"
+			android:textSize="@dimen/login_text_size"
+			style="@style/lexicon_text_view"
+			/>
+
+		<EditText
+			android:id="@+id/liferay_login"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/your_login"
+			android:paddingLeft="@dimen/padding_horizontal_login"
+			android:paddingRight="@dimen/padding_horizontal_login"
+			android:textSize="@dimen/login_text_size"
+			style="@style/lexicon_edit_text"
+			/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/login_margin_top"
+			android:text="@string/password"
+			android:textSize="@dimen/login_text_size"
+			style="@style/lexicon_text_view"
+			/>
+
+		<EditText
+			android:id="@+id/liferay_password"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:inputType="textPassword"
+			android:hint="@string/your_password"
+			android:labelFor="@+id/liferay_password"
+			android:paddingLeft="@dimen/padding_horizontal_login"
+			android:paddingRight="@dimen/padding_horizontal_login"
+			android:textSize="@dimen/login_text_size"
+			style="@style/lexicon_edit_text"
+			/>
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/login_button_height"
+			android:layout_marginTop="@dimen/login_margin_top"
+			>
+
+			<Button
+				android:id="@+id/liferay_login_button"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/uppercase_login"
+				style="@style/lexicon_button"
+				/>
+
+			<com.liferay.mobile.screens.base.ModalProgressBar
+				android:id="@+id/liferay_progress"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_gravity="center_vertical|start"
+				android:theme="@style/white_theme"
+				android:visibility="invisible"
+				app:actionViewId="@id/liferay_login_button"
+				/>
+
+		</RelativeLayout>
+
+	</LinearLayout>
+
+</mobile.liferay.com.formsscreenletdemo.LoginDemoView>
