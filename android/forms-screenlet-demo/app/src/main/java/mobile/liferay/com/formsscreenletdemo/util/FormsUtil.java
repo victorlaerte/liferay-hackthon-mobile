@@ -12,7 +12,7 @@ import mobile.liferay.com.formsscreenletdemo.R;
 public class FormsUtil {
 
 	public static String getResourcePath(String serverURL, long formInstanceId) {
-		String formEndpoint = "/o/api/p/form-instance/%d?embedded=structure";
+		String formEndpoint = "/o/api/p/form/%d?embedded=structure";
 		return serverURL + String.format(formEndpoint, formInstanceId);
 	}
 

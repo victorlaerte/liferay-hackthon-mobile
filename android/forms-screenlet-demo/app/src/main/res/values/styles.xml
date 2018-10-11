@@ -12,4 +12,13 @@
         <item name="android:textStyle">bold</item>
         <item name="android:background">@android:color/white</item>
     </style>
+
+    <style name="TransparentTheme" parent="lexicon_theme">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
 </resources>

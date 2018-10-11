@@ -2,16 +2,23 @@ package mobile.liferay.com.formsscreenletdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import com.liferay.apio.consumer.ApioConsumer;
 import com.liferay.apio.consumer.authenticator.BasicAuthenticator;
 import com.liferay.apio.consumer.model.Thing;
 import com.liferay.mobile.screens.context.SessionContext;
+import com.liferay.mobile.screens.context.storage.CredentialsStorageBuilder;
 import com.liferay.mobile.screens.ddm.form.model.FormInstanceRecord;
 import com.liferay.mobile.screens.ddm.form.service.APIOFetchLatestDraftService;
 import com.liferay.mobile.screens.util.LiferayLogger;
@@ -26,18 +33,58 @@ import okhttp3.HttpUrl;
  */
 public class HomeActivity extends AppCompatActivity {
 
+	private DrawerLayout drawerLayout;
+	private NavigationView navigationView;
+	private Toolbar toolbar;
+	private TextView userName;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		toolbar = findViewById(R.id.home_toolbar);
+		setSupportActionBar(toolbar);
 
 		Button formButton = findViewById(R.id.forms_button);
 		formButton.setOnClickListener(this::startFormActivity);
 
-		FormsUtil.setLightStatusBar(this, getWindow());
-
 		if (savedInstanceState == null) {
 			checkForDraft();
+		}
+
+		setupNavigationDrawer();
+	}
+
+	@Override
+	public void onBackPressed() {
+		DrawerLayout drawer = findViewById(R.id.drawer_layout);
+		if (drawer.isDrawerOpen(GravityCompat.START)) {
+			drawer.closeDrawer(GravityCompat.START);
+		} else {
+			super.onBackPressed();
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				drawerLayout.openDrawer(GravityCompat.START);
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	public void selectDrawerItem(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.sign_out:
+				SessionContext.logout();
+				SessionContext.removeStoredCredentials(CredentialsStorageBuilder.StorageType.SHARED_PREFERENCES);
+				Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+				finish();
+				startActivity(intent);
+
+				break;
 		}
 	}
 
@@ -48,10 +95,14 @@ public class HomeActivity extends AppCompatActivity {
 
 		try {
 			String credentials = SessionContext.getCredentialsFromCurrentSession();
-			new ApioConsumer(new BasicAuthenticator(credentials)).fetch(httpUrl, this::onThingLoaded, this::logError);
+			ApioConsumer apioConsumer = ApioConsumer.INSTANCE;
+
+			apioConsumer.setAuthenticator(new BasicAuthenticator(credentials));
+			apioConsumer.fetch(httpUrl, this::onThingLoaded, this::logError);
 		} catch (Exception e) {
 			LiferayLogger.e(e.getMessage());
 		}
+
 	}
 
 	private Unit logError(Exception e) {
@@ -80,6 +131,13 @@ public class HomeActivity extends AppCompatActivity {
 		return Unit.INSTANCE;
 	}
 
+	private void setupDrawerContent(NavigationView navigationView) {
+		navigationView.setNavigationItemSelectedListener(item -> {
+			selectDrawerItem(item);
+			return true;
+		});
+	}
+
 	private void setupDialog() {
 		LayoutInflater inflater = getLayoutInflater();
 		View dialogView = inflater.inflate(R.layout.custom_dialog, null);
@@ -99,8 +157,26 @@ public class HomeActivity extends AppCompatActivity {
 		alertDialog.show();
 	}
 
+	private void setupNavigationDrawer() {
+		drawerLayout = findViewById(R.id.drawer_layout);
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+			this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+		drawerLayout.addDrawerListener(toggle);
+		toggle.syncState();
+
+		navigationView = findViewById(R.id.nav_view);
+		navigationView.setNavigationItemSelectedListener(this::onOptionsItemSelected);
+
+		setupDrawerContent(navigationView);
+
+		View navHeaderView = navigationView.getHeaderView(0);
+		userName = navHeaderView.findViewById(R.id.user_name);
+		userName.setText(SessionContext.getCurrentUser().getFullName());
+	}
+
 	private void startFormActivity(View view) {
 		Intent intent = new Intent(HomeActivity.this, FormsActivity.class);
 		startActivity(intent);
 	}
+
 }

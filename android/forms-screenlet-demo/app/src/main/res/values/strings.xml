@@ -1,5 +1,7 @@
 <resources>
 	<string name="app_name">TGF</string>
+	<string name="drawer_close">Close navigation drawer</string>
+	<string name="drawer_open">Open navigation drawer</string>
 	<string name="default_email">test@liferay.com</string>
 	<string name="default_password">test</string>
 	<string name="form_button">Form</string>
@@ -12,14 +14,15 @@
 	<string name="login">Login</string>
 	<string name="login_failed">Login Failed</string>
 	<string name="password">Password</string>
+	<string name="sign_out">Sign Out</string>
 	<string name="uppercase_login">LOGIN</string>
 	<string name="we_have_coverage_options_to_protect_your_car_against_just_about_anything">We have coverage options to protect your car against just about anything.</string>
 	<string name="your_login">Your Login</string>
 	<string name="your_password">Your Password</string>
-    <string name="continue_insurance_quote_form">Continue Insurance Quote form?</string>
-    <string name="you_started_a_form_at_our_website">You started a form at our website.</string>
-    <string name="not_now">NOT NOW</string>
-    <string name="continue_">CONTINUE</string>
-    <string name="could_not_load_form">Could not load Form</string>
-    <string name="your_information_was_successfully_sent">Your information was successfully sent.</string>
+	<string name="continue_insurance_quote_form">Continue Insurance Quote form?</string>
+	<string name="you_started_a_form_at_our_website">You started a form at our website.</string>
+	<string name="not_now">NOT NOW</string>
+	<string name="continue_">CONTINUE</string>
+	<string name="could_not_load_form">Could not load Form</string>
+	<string name="your_information_was_successfully_sent">Your information was successfully sent.</string>
 </resources>

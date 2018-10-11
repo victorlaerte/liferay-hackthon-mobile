@@ -18,16 +18,21 @@
         </activity>
         <activity android:name=".FormsActivity">
         </activity>
-        <activity android:name=".HomeActivity">
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@style/TransparentTheme">
         </activity>
-        <activity android:name=".SplashActivity"
-	        android:theme="@style/CustomActionBar"
-	        android:fitsSystemWindows="true">
+        <activity
+            android:name=".SplashActivity"
+            android:fitsSystemWindows="true"
+            android:theme="@style/CustomActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".ResetPassword">
         </activity>
     </application>
 
