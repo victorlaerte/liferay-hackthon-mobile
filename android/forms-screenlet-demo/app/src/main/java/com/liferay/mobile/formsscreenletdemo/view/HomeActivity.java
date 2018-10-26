@@ -14,6 +14,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,6 +25,7 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.gson.JsonObject;
 import com.liferay.apio.consumer.model.Thing;
 import com.liferay.mobile.android.service.Session;
 import com.liferay.mobile.formsscreenletdemo.GeofenceTransitionsIntentService;
@@ -54,6 +57,7 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
 	private DrawerLayout drawerLayout;
 	private NavigationView navigationView;
 	private ThingScreenlet userPortrait;
+	private RecyclerView contentView;
 	private Toolbar toolbar;
 	private TextView userName;
 	private static final int PORTRAIT_WIDTH = 90;
@@ -70,6 +74,21 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
 		toolbar = findViewById(R.id.home_toolbar);
 		toolbar.setTitleTextColor(ContextCompat.getColor(this, android.R.color.white));
 		toolbar.setTitle("Extrato");
+
+		contentView = findViewById(R.id.content_extrato);
+		contentView.setLayoutManager(new LinearLayoutManager(this));
+
+		JSONObject mockedJSON = getMockedJSON();
+		try {
+			JSONObject jsonOctober = mockedJSON.getJSONArray("periods").getJSONObject(0);
+			JSONArray purchases = jsonOctober.getJSONArray("purchases");
+			contentView.setAdapter(new ContentAdapter(this, purchases));
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+
 		setSupportActionBar(toolbar);
 		setupForPushNotification();
 
@@ -87,7 +106,6 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
 			}
 		}
 
-		Log.d("test", getMockedJSON().toString());
 		//setupGeoLocation();
 
 	}
@@ -317,12 +335,12 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
 			JSONArray purchases = new JSONArray();
 
 			JSONObject purchaseRow = new JSONObject();
-			purchaseRow.put("data", "10/10/18");
+			purchaseRow.put("date", "10/10/18");
 			purchaseRow.put("description", "Netflix");
 			purchaseRow.put("value", 50.00);
 
 			purchases.put(purchaseRow);
-			october.put("total", 1.450);
+			october.put("total", 50);
 			october.put("purchases", purchases);
 
 			periods.put(october);

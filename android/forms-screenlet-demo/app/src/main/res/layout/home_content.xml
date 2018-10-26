@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
@@ -11,47 +11,55 @@
 	>
 
 	<LinearLayout
+		android:id="@+id/header"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:layout_alignParentBottom="true"
-		android:padding="20dp"
+		android:orientation="horizontal"
+		android:layout_marginLeft="20dp"
+		android:layout_marginRight="20dp"
+		android:layout_marginTop="100dp"
+		android:weightSum="4"
 		>
 
 		<TextView
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:text="LIMITE DISPONÍVEL"
-			android:textSize="10sp"
-			android:textColor="@color/colorPrimary_lexicon"
+			android:layout_weight="1"
+			android:text="Data"
 			/>
 
 		<TextView
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:text="R$ 10.058,00"
-			android:textStyle="bold"
-			android:textSize="22sp"
-			android:textColor="@color/colorPrimaryLight_lexicon"
+			android:layout_weight="2"
+			android:text="Descrição"
+
 			/>
 
 		<TextView
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:text="SUA FATURA"
-			android:textSize="10sp"
-			android:textColor="@color/colorPrimary_lexicon"
+			android:layout_weight="1"
+			android:text="Valor"
 			/>
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textSize="22sp"
-			android:textStyle="bold"
-			android:text="R$ 3.541,34"
-			android:textColor="@color/colorPrimaryLight_lexicon"
-			/>
-
 	</LinearLayout>
 
-</RelativeLayout>
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/content_extrato"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+
+	</android.support.v7.widget.RecyclerView>
+
+	<TextView
+		android:layout_gravity="end"
+		android:gravity="end"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="20dp"
+		android:layout_marginEnd="30dp"
+		android:text="Total: R$ 1231,00"
+		/>
+
+</LinearLayout>
