@@ -11,12 +11,23 @@
 		android:orientation="vertical"
 		>
 
-		<TextView
-			android:text="@string/create_your_account_to_get_started"
-			android:layout_height="wrap_content"
+		<android.widget.Toolbar
+			android:id="@+id/login_toolbar"
 			android:layout_width="match_parent"
-			android:padding="@dimen/signup_information_padding"
-			/>
+			android:layout_height="wrap_content"
+			android:background="@color/white"
+			android:elevation="@dimen/toolbar_elevation"
+			android:titleTextColor="@color/toolbar_text_color"
+			>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/create_your_account_to_get_started"
+				android:textSize="@dimen/toolbar_title_text_size"
+				/>
+
+		</android.widget.Toolbar>
 
 		<com.liferay.mobile.screens.auth.signup.SignUpScreenlet
 			android:id="@+id/signup_screenlet"

@@ -8,6 +8,7 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
 	<application
 		android:allowBackup="true"
@@ -67,8 +68,17 @@
 			</intent-filter>
 		</receiver>
 
+		<receiver android:name=".GeofenceTransitionsReceiver"
+			android:exported="false">
+			<intent-filter >
+				<action android:name="com.aol.android.geofence.ACTION_RECEIVE_GEOFENCE"/>
+			</intent-filter>
+		</receiver>
+
 		<service android:name=".push.PushService"
 			android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+		<service android:name=".GeofenceTransitionsIntentService"/>
 
 	</application>
 </manifest>
