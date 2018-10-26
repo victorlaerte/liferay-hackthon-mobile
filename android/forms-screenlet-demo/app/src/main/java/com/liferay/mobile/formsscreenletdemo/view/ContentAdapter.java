@@ -35,9 +35,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder> {
 
 		try {
 			JSONObject jsonRow = jsonArray.getJSONObject(position);
-			holder.dateTextView.setText(jsonRow.getString("date"));
-			holder.descriptionTextView.setText(jsonRow.getString("description"));
-			holder.valueTextView.setText(String.valueOf(jsonRow.getDouble("value")));
+			holder.dateTextView.setText(jsonRow.getString("data"));
+			holder.descriptionTextView.setText(jsonRow.getString("descricao"));
+			holder.valueTextView.setText("R$ " + String.valueOf(jsonRow.getDouble("valor")));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="liferay_server">http://192.168.110.90:8080</string>
+    <string name="liferay_server">http://192.168.108.43:8080</string>
 
     <string name="liferay_company_id">20099</string>
     <string name="liferay_group_id">20135</string>

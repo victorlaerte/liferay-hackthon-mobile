@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingEvent;
+//import com.google.android.gms.location.Geofence;
+//import com.google.android.gms.location.GeofencingEvent;
 import com.liferay.mobile.formsscreenletdemo.util.NotificationUtil;
 import java.util.List;
 
@@ -24,22 +24,22 @@ public class GeofenceTransitionsReceiver extends BroadcastReceiver {
 
 		broadcastIntent.addCategory(Intent.CATEGORY_APP_MAPS);
 
-		GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
-		if (geofencingEvent.hasError()) {
-			Log.e("AAA", geofencingEvent.getErrorCode() + "");
-			return;
-		}
-
-		// Get the transition type.
-		int geofenceTransition = geofencingEvent.getGeofenceTransition();
-
-		// Test that the reported transition was of interest.
-		if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER
-			|| geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
-			handleEnterExit(geofencingEvent);
-		} else {
-			handleError(intent);
-		}
+		//GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+		//if (geofencingEvent.hasError()) {
+		//	Log.e("AAA", geofencingEvent.getErrorCode() + "");
+		//	return;
+		//}
+		//
+		//// Get the transition type.
+		//int geofenceTransition = geofencingEvent.getGeofenceTransition();
+		//
+		//// Test that the reported transition was of interest.
+		//if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER
+		//	|| geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+		//	handleEnterExit(geofencingEvent);
+		//} else {
+		//	handleError(intent);
+		//}
 	}
 
 	private void handleError(Intent intent) {
@@ -54,7 +54,7 @@ public class GeofenceTransitionsReceiver extends BroadcastReceiver {
 		LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent);
 	}
 
-	private void handleEnterExit(GeofencingEvent geofencingEvent) {
+	//private void handleEnterExit(GeofencingEvent geofencingEvent) {
 		// Post a notification
 		//List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 		//
@@ -75,6 +75,6 @@ public class GeofenceTransitionsReceiver extends BroadcastReceiver {
 
 		//LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent);
 
-		NotificationUtil.sendNotification(context, "", "teste", "teste");
-	}
+		//NotificationUtil.sendNotification(context, "", "teste", "teste");
+	//}
 }

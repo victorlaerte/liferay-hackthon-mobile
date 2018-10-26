@@ -17,11 +17,13 @@ footer {
 .portlet {
 	margin-top: -40px;
 	margin-bottom: 0px;
+	background-color:white
 }
 
 .portlet-content {
 	margin-top: -50px;
 	margin-bottom: 0px;
+	background-color:white
 }
 
 .control-menu {
@@ -34,3 +36,7 @@ footer {
 #wrapper {
 	margin-top: 0px;
 }
+
+.journal-content-article{
+	background-color:white
+	}

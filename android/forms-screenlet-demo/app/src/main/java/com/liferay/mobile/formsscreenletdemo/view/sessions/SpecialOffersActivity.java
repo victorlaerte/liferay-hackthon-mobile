@@ -47,7 +47,7 @@ public class SpecialOffersActivity extends AppCompatActivity implements WebConte
 		progressBarWithLabel.show("Loading....");
 
 		WebScreenletConfiguration.Builder builder =
-			new WebScreenletConfiguration.Builder("/web/guest/my-custom-webcontent");
+			new WebScreenletConfiguration.Builder("/web/guest/ofertas");
 
 		builder.addLocalCss("banner.css");
 
@@ -58,8 +58,6 @@ public class SpecialOffersActivity extends AppCompatActivity implements WebConte
 		webScreenlet.setListener(this);
 		webScreenlet.load();
 
-		Button formButton = findViewById(R.id.forms_button);
-		formButton.setOnClickListener(this::startFormActivity);
 	}
 
 	@Override

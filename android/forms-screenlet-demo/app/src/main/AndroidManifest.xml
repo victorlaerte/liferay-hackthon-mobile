@@ -68,17 +68,8 @@
 			</intent-filter>
 		</receiver>
 
-		<receiver android:name=".GeofenceTransitionsReceiver"
-			android:exported="false">
-			<intent-filter >
-				<action android:name="com.aol.android.geofence.ACTION_RECEIVE_GEOFENCE"/>
-			</intent-filter>
-		</receiver>
-
 		<service android:name=".push.PushService"
 			android:permission="android.permission.BIND_JOB_SERVICE"/>
-
-		<service android:name=".GeofenceTransitionsIntentService"/>
 
 	</application>
 </manifest>

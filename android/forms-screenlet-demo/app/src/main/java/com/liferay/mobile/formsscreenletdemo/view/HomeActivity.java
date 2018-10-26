@@ -21,10 +21,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingClient;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.gson.JsonObject;
 import com.liferay.apio.consumer.model.Thing;
 import com.liferay.mobile.android.service.Session;
@@ -41,6 +37,9 @@ import com.liferay.mobile.screens.thingscreenlet.screens.ThingScreenlet;
 import com.liferay.mobile.screens.thingscreenlet.screens.views.Custom;
 import com.liferay.mobile.screens.util.AndroidUtil;
 import com.liferay.mobile.screens.util.LiferayLogger;
+import com.wedeploy.android.Callback;
+import com.wedeploy.android.WeDeploy;
+import com.wedeploy.android.transport.Response;
 import java.util.ArrayList;
 import java.util.List;
 import kotlin.Unit;
@@ -78,17 +77,6 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
 		contentView = findViewById(R.id.content_extrato);
 		contentView.setLayoutManager(new LinearLayoutManager(this));
 
-		JSONObject mockedJSON = getMockedJSON();
-		try {
-			JSONObject jsonOctober = mockedJSON.getJSONArray("periods").getJSONObject(0);
-			JSONArray purchases = jsonOctober.getJSONArray("purchases");
-			contentView.setAdapter(new ContentAdapter(this, purchases));
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-
 		setSupportActionBar(toolbar);
 		setupForPushNotification();
 
@@ -106,49 +94,76 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
 			}
 		}
 
+
+		WeDeploy.Builder builder = new WeDeploy.Builder();
+		builder.build().data("http://192.168.108.43:8080/o/extrato-rest-service")
+			.get("/cliente/extrato/" + SessionContext.getCurrentUser().getId())
+			.execute(new Callback() {
+				@Override
+				public void onSuccess(Response response) {
+					TextView total = findViewById(R.id.extrato_total);
+					try {
+						JSONObject jsonResponse = new JSONObject(response.getBody());
+						JSONObject extrato = jsonResponse.getJSONObject("extrato");
+						JSONArray lancamentos = extrato.getJSONArray("lancamentos");
+						contentView.setAdapter(new ContentAdapter(HomeActivity.this, lancamentos));
+
+						total.setText("R$ " + extrato.getString("total"));
+
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
+				}
+
+				@Override
+				public void onFailure(Exception e) {
+					Log.d("Teste", e.getMessage());
+				}
+			});
 		//setupGeoLocation();
 
 	}
 
 	private void setupGeoLocation() {
-		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-			!= PackageManager.PERMISSION_GRANTED
-			&& ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-			!= PackageManager.PERMISSION_GRANTED) {
+		//if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+		//	!= PackageManager.PERMISSION_GRANTED
+		//	&& ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+		//	!= PackageManager.PERMISSION_GRANTED) {
+		//
+		//	ActivityCompat.requestPermissions(this, new String[] {
+		//		Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+		//	}, REQUEST_PERMISSION_PHONE_STATE);
+		//	return;
+		//}
 
-			ActivityCompat.requestPermissions(this, new String[] {
-				Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
-			}, REQUEST_PERMISSION_PHONE_STATE);
-			return;
-		}
-
-		GeofencingClient mGeofencingClient = LocationServices.getGeofencingClient(this);
-		mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
-			.addOnSuccessListener(this, aVoid -> {
-				Log.d("TEST", "hahaha");
-			})
-			.addOnFailureListener(this, e -> {
-				Log.d("TEST", "hahaha");
-			});
+		//GeofencingClient mGeofencingClient = LocationServices.getGeofencingClient(this);
+		//mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
+		//	.addOnSuccessListener(this, aVoid -> {
+		//		Log.d("TEST", "hahaha");
+		//	})
+		//	.addOnFailureListener(this, e -> {
+		//		Log.d("TEST", "hahaha");
+		//	});
 	}
 
-	private GeofencingRequest getGeofencingRequest() {
-		List<Geofence> mGeofenceList = new ArrayList<>();
-
-		Geofence geofencePaoDeAcucar = new Geofence.Builder().setRequestId("paoacucar")
-			.setCircularRegion(LATITUDE, LONGITUDE, 200)
-			.setExpirationDuration(1000000)
-			.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-			.build();
-
-		mGeofenceList.add(geofencePaoDeAcucar);
-
-		GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-		builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-		builder.addGeofences(mGeofenceList);
-
-		return builder.build();
-	}
+	//private GeofencingRequest getGeofencingRequest() {
+	//	List<Geofence> mGeofenceList = new ArrayList<>();
+	//
+	//	Geofence geofencePaoDeAcucar = new Geofence.Builder().setRequestId("paoacucar")
+	//		.setCircularRegion(LATITUDE, LONGITUDE, 200)
+	//		.setExpirationDuration(1000000)
+	//		.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+	//		.build();
+	//
+	//	mGeofenceList.add(geofencePaoDeAcucar);
+	//
+	//	GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+	//	builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+	//	builder.addGeofences(mGeofenceList);
+	//
+	//	return builder.build();
+	//}
 
 	private PendingIntent getGeofencePendingIntent() {
 		// Reuse the PendingIntent if we already have it.
@@ -328,24 +343,20 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
 
 	private JSONObject getMockedJSON() {
 		try {
-
 			JSONObject json = new JSONObject();
-			JSONArray periods = new JSONArray();
-			JSONObject october = new JSONObject();
-			JSONArray purchases = new JSONArray();
+			JSONObject extrato = new JSONObject();
+			JSONArray lancamentos = new JSONArray();
 
-			JSONObject purchaseRow = new JSONObject();
-			purchaseRow.put("date", "10/10/18");
-			purchaseRow.put("description", "Netflix");
-			purchaseRow.put("value", 50.00);
+			JSONObject lancamento = new JSONObject();
+			lancamento.put("data", "10/10/18");
+			lancamento.put("descricao", "Netflix");
+			lancamento.put("valor", 50.00);
 
-			purchases.put(purchaseRow);
-			october.put("total", 50);
-			october.put("purchases", purchases);
+			lancamentos.put(lancamento);
+			extrato.put("total", 50);
+			extrato.put("lancamentos", lancamentos);
 
-			periods.put(october);
-
-			json.put("periods", periods);
+			json.put("extrato", extrato);
 
 			return json;
 		} catch (Exception e) {
