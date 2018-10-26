@@ -17,7 +17,7 @@ public class FormsUtil {
 	}
 
 	public static void setLightStatusBar(Context context, Window window) {
-		window.setStatusBarColor(ContextCompat.getColor(context, R.color.login_status_bar_color));
+		window.setStatusBarColor(ContextCompat.getColor(context, R.color.verdao));
 		window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 	}
 }

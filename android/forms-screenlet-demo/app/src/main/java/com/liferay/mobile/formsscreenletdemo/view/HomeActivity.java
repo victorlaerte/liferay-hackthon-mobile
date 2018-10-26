@@ -13,16 +13,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -32,29 +27,21 @@ import com.liferay.apio.consumer.model.Thing;
 import com.liferay.mobile.android.service.Session;
 import com.liferay.mobile.formsscreenletdemo.GeofenceTransitionsIntentService;
 import com.liferay.mobile.formsscreenletdemo.R;
-import com.liferay.mobile.formsscreenletdemo.service.APIOFetchResourceService;
-import com.liferay.mobile.formsscreenletdemo.util.Constants;
-import com.liferay.mobile.formsscreenletdemo.util.FormsUtil;
 import com.liferay.mobile.formsscreenletdemo.util.PersonUtil;
 import com.liferay.mobile.formsscreenletdemo.view.login.LoginActivity;
-import com.liferay.mobile.formsscreenletdemo.view.sessions.BlogPostingsActivity;
 import com.liferay.mobile.formsscreenletdemo.view.sessions.SpecialOffersActivity;
-import com.liferay.mobile.formsscreenletdemo.view.sessions.TakeCareListActivity;
 import com.liferay.mobile.push.Push;
 import com.liferay.mobile.screens.context.SessionContext;
 import com.liferay.mobile.screens.context.storage.CredentialsStorageBuilder;
 import com.liferay.mobile.screens.ddm.form.model.FormInstanceRecord;
-import com.liferay.mobile.screens.ddm.form.service.APIOFetchLatestDraftService;
 import com.liferay.mobile.screens.thingscreenlet.screens.ThingScreenlet;
 import com.liferay.mobile.screens.thingscreenlet.screens.views.Custom;
 import com.liferay.mobile.screens.util.AndroidUtil;
 import com.liferay.mobile.screens.util.LiferayLogger;
-import com.liferay.mobile.screens.web.WebListener;
-import com.liferay.mobile.screens.web.WebScreenlet;
-import com.liferay.mobile.screens.web.WebScreenletConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 import kotlin.Unit;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,14 +49,11 @@ import org.json.JSONObject;
  * @author Luísa Lima
  * @author Victor Oliveira
  */
-public class HomeActivity extends AppCompatActivity
-	implements ActivityCompat.OnRequestPermissionsResultCallback, WebListener {
+public class HomeActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
 	private DrawerLayout drawerLayout;
 	private NavigationView navigationView;
 	private ThingScreenlet userPortrait;
-	private WebScreenlet webScreenlet;
-	private LinearLayout bannerLayout;
 	private Toolbar toolbar;
 	private TextView userName;
 	private static final int PORTRAIT_WIDTH = 90;
@@ -85,25 +69,9 @@ public class HomeActivity extends AppCompatActivity
 		setContentView(R.layout.activity_home);
 		toolbar = findViewById(R.id.home_toolbar);
 		toolbar.setTitleTextColor(ContextCompat.getColor(this, android.R.color.white));
+		toolbar.setTitle("Extrato");
 		setSupportActionBar(toolbar);
 		setupForPushNotification();
-
-		webScreenlet = findViewById(R.id.web_screenlet);
-
-		WebScreenletConfiguration.Builder builder =
-			new WebScreenletConfiguration.Builder("/web/guest/my-custom-webcontent");
-
-		builder.addLocalCss("banner.css");
-
-		bannerLayout = findViewById(R.id.banner_layout);
-
-		webScreenlet.setWebScreenletConfiguration(builder.load());
-		webScreenlet.setScrollEnabled(true);
-		webScreenlet.setListener(this);
-		webScreenlet.load();
-
-		Button formButton = findViewById(R.id.forms_button);
-		formButton.setOnClickListener(this::startFormActivity);
 
 		if (savedInstanceState == null) {
 			checkForDraft();
@@ -119,6 +87,7 @@ public class HomeActivity extends AppCompatActivity
 			}
 		}
 
+		Log.d("test", getMockedJSON().toString());
 		//setupGeoLocation();
 
 	}
@@ -220,9 +189,9 @@ public class HomeActivity extends AppCompatActivity
 			//case R.id.blog_postings:
 			//	startActivity(BlogPostingsActivity.class);
 			//	break;
-			//case R.id.special_offers:
-			//	startActivity(SpecialOffersActivity.class);
-			//	break;
+			case R.id.special_offers:
+				startActivity(SpecialOffersActivity.class);
+				break;
 			case R.id.sign_out:
 				signOut();
 				break;
@@ -244,10 +213,10 @@ public class HomeActivity extends AppCompatActivity
 	}
 
 	private void checkForDraft() {
-		String server = getResources().getString(R.string.liferay_server);
-		String url = FormsUtil.getResourcePath(server, Constants.FORM_INSTANCE_ID);
-
-		new APIOFetchResourceService().fetchResource(url, this::onThingLoaded, this::logError);
+		//String server = getResources().getString(R.string.liferay_server);
+		//String url = FormsUtil.getResourcePath(server, Constants.FORM_INSTANCE_ID);
+		//
+		//new APIOFetchResourceService().fetchResource(url, this::onThingLoaded, this::logError);
 	}
 
 	private Unit logError(Exception e) {
@@ -261,7 +230,7 @@ public class HomeActivity extends AppCompatActivity
 	}
 
 	private void loadDraft(Thing thing) {
-		new APIOFetchLatestDraftService().fetchLatestDraft(thing, this::onDraftLoaded, this::logError);
+		//new APIOFetchLatestDraftService().fetchLatestDraft(thing, this::onDraftLoaded, this::logError);
 	}
 
 	private void loadPortrait() throws Exception {
@@ -291,22 +260,22 @@ public class HomeActivity extends AppCompatActivity
 	}
 
 	private void setupDialog() {
-		LayoutInflater inflater = getLayoutInflater();
-		View dialogView = inflater.inflate(R.layout.custom_dialog, null);
-		Button positiveButton = dialogView.findViewById(R.id.dialog_positive_button);
-		Button negativeButton = dialogView.findViewById(R.id.dialog_negative_button);
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
-		builder.setView(dialogView);
-		AlertDialog alertDialog = builder.create();
-
-		negativeButton.setOnClickListener(v -> alertDialog.dismiss());
-		positiveButton.setOnClickListener(view -> {
-			alertDialog.dismiss();
-			startFormActivity(view);
-		});
-
-		alertDialog.show();
+		//LayoutInflater inflater = getLayoutInflater();
+		//View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+		//Button positiveButton = dialogView.findViewById(R.id.dialog_positive_button);
+		//Button negativeButton = dialogView.findViewById(R.id.dialog_negative_button);
+		//
+		//AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
+		//builder.setView(dialogView);
+		//AlertDialog alertDialog = builder.create();
+		//
+		//negativeButton.setOnClickListener(v -> alertDialog.dismiss());
+		//positiveButton.setOnClickListener(view -> {
+		//	alertDialog.dismiss();
+		//	startFormActivity(view);
+		//});
+		//
+		//alertDialog.show();
 	}
 
 	private void setupNavigationDrawer() {
@@ -339,24 +308,32 @@ public class HomeActivity extends AppCompatActivity
 		return Unit.INSTANCE;
 	}
 
-	private void startFormActivity(View view) {
-		Intent intent = new Intent(HomeActivity.this, FormsActivity.class);
-		startActivity(intent);
-	}
+	private JSONObject getMockedJSON() {
+		try {
 
-	@Override
-	public void onPageLoaded(String url) {
-		bannerLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out));
-		bannerLayout.setVisibility(View.VISIBLE);
-	}
+			JSONObject json = new JSONObject();
+			JSONArray periods = new JSONArray();
+			JSONObject october = new JSONObject();
+			JSONArray purchases = new JSONArray();
 
-	@Override
-	public void onScriptMessageHandler(String namespace, String body) {
+			JSONObject purchaseRow = new JSONObject();
+			purchaseRow.put("data", "10/10/18");
+			purchaseRow.put("description", "Netflix");
+			purchaseRow.put("value", 50.00);
 
-	}
+			purchases.put(purchaseRow);
+			october.put("total", 1.450);
+			october.put("purchases", purchases);
 
-	@Override
-	public void error(Exception e, String userAction) {
-		LiferayLogger.e(e.getMessage(), e);
+			periods.put(october);
+
+			json.put("periods", periods);
+
+			return json;
+		} catch (Exception e) {
+
+		}
+
+		return null;
 	}
 }
