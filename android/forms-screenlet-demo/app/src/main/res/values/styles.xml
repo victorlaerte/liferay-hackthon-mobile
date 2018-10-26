@@ -17,6 +17,12 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="cetelem_theme" parent="lexicon_theme">
+        <item name="colorAccent">#00b558</item>
+        <item name="colorControlHighlight">#00b558</item>
+        <item name="colorControlActivated">#00b558</item>
+    </style>
+
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
 	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

@@ -1,0 +1,36 @@
+header {
+    display: none;
+}
+
+footer {
+    display: none;
+}
+
+.portlet-topper {
+	display:none;
+}
+
+.portlet-header {
+	display:none;
+}
+
+.portlet {
+	margin-top: -40px;
+	margin-bottom: 0px;
+}
+
+.portlet-content {
+	margin-top: -50px;
+	margin-bottom: 0px;
+}
+
+.control-menu {
+	display: none;
+}
+
+.portlet-title-default {
+	display:none;
+}
+#wrapper {
+	margin-top: 0px;
+}
